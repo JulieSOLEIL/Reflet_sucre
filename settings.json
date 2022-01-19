@@ -1,3 +1,7 @@
 {
-    "symfony-vscode.phpExecutablePath": "C:\\xampp\\php\\php.exe"
+    "symfony-vscode.phpExecutablePath": "C:\\xampp\\php\\php.exe",
+    "emmet.includeLanguages": { 
+        "javascript": "javascriptreact" 
+    }, 
+    "emmet.triggerExpansionOnTab": true
 }
