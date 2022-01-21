@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte - Reflet Sucré{% endblock %}
+
+{% block content %}
+
+<h1>Mon compte</h1>
+Bienvenue {{ app.user.firstname }} dans votre espace client. <br>
+C'est un espace que vous aller pouvoir gérer toutes vos infos persos.
+<hr>
+- <a href="{{ path('account_password') }}">Modifier mon mot de passe</a><br>
+-add address <br>
+-gérer les commandes <br>
+<hr>
+{% endblock %}
