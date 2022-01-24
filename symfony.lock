@@ -417,7 +417,16 @@
     "symfony/yaml": {
         "version": "v6.0.2"
     },
+    "twig/extra-bundle": {
+        "version": "v3.3.7"
+    },
+    "twig/intl-extra": {
+        "version": "v3.3.5"
+    },
     "twig/twig": {
         "version": "v3.3.7"
+    },
+    "webmozart/assert": {
+        "version": "1.10.0"
     }
 }
