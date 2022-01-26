@@ -1,3 +1,4 @@
+/* Templates/base.html.twig */
 .navbar-item-custom, .navbar-item-custom a {
     color: #fff;
 }
@@ -10,13 +11,41 @@
     background-color: #dfeaff;
     padding-top: 25px;
 }
-
 .footer-custom .float-right {
     margin-right: 25px;
 }
+
+/* templates/register/index.html.twig */
 .button-submit-password {
     margin-bottom: 50px;
 }
 .hr-submit-line {
     margin-bottom: 80px;
+}
+
+/* templates/Product/index.html.twig */
+.product-item h5 {
+    text-transform: uppercase;
+    font-size: 15px;
+    margin-bottom: 1px;
+}
+.product-item {
+    margin-top: 50px;
+}
+.product-item .product-subtitle {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 10px;
+}
+.product-item .product-pastryPart {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 10px;
+}
+.product-item .product-price {
+    font-size: 15px;
+    font-weight: bold;
+}
+.product-container {
+    margin-bottom: 130px;
 }

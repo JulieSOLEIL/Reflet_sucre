@@ -25,6 +25,9 @@ class Product
     #[ORM\Column(type: 'string', length: 255)]
     private $subtitle;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $pastry_part;
+
     #[ORM\Column(type: 'text')]
     private $description;
 
@@ -88,6 +91,18 @@ class Product
         return $this;
     }
 
+    public function getPastryPart(): ?string
+    {
+        return $this->pastry_part;
+    }
+
+    public function setPastryPart(string $pastry_part): self
+    {
+        $this->pastry_part = $pastry_part;
+
+        return $this;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
@@ -123,4 +138,5 @@ class Product
 
         return $this;
     }
+
 }
