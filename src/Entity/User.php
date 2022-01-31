@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -30,6 +32,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 255)]
     private $lastname;
+
+    #[ORM\OneToMany(targetEntity: Address::class, mappedBy: 'user')]
+    private $addresses;
+
+    public function __construct()
+    {
+        $this->addresses = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -124,4 +134,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+      /**
+     * @return Collection|Address[]
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    public function addAdress(Address $address): self
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses[] = $address;
+            $address->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): self
+    {
+        if ($this->addresses->removeElement($address)) {
+            // set the owning side to null (unless already changed)
+            if ($address->getUser() === $this) {
+                $address->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

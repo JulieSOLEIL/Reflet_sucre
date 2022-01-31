@@ -18,7 +18,7 @@ class AccountPasswordController extends AbstractController
     public function __construct(EntityManagerInterface $emi) {
         $this->entityManager = $emi;
     }
-    #[Route('/compte-modifier-mot-de-passe', name: 'account_password')]
+    #[Route('/compte/modifier-mot-de-passe', name: 'account_password')]
     public function index(Request $request, UserPasswordHasherInterface $hasher): Response
     {
         $notif = null;

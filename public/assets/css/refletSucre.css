@@ -12,17 +12,22 @@ body {
     width: 100%;
     background-color: #dfeaff;
     padding-top: 25px;
+    margin-top: 50px;
 }
 .footer-custom .float-right {
     margin-right: 25px;
 }
-
+.cart-icon {
+    height: 20px;
+    padding-left: 20px;
+}
+/* templates/account/index.html.twig */
+.footer-account-index {
+    margin-bottom: 200px;
+}
 /* templates/register/index.html.twig */
 .button-submit-password {
     margin-bottom: 50px;
-}
-.hr-submit-line {
-    margin-bottom: 80px;
 }
 
 /* templates/Product/index.html.twig */

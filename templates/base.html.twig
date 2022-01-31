@@ -16,8 +16,8 @@
 		</title>
 
 		<!-- Bootstrap core CSS -->
-		<link rel="stylesheet" href="{{ 'assets/css/bootstrap.min.css' }}">
-		<link rel="stylesheet" href="{{ 'assets/css/refletSucre.css' }}">
+		<link rel="stylesheet" href="{{ '/assets/css/bootstrap.min.css' }}">
+		<link rel="stylesheet" href="{{ '/assets/css/refletSucre.css' }}">
 
 		<style>
 			.bd-placeholder-img {
@@ -36,7 +36,7 @@
 			}
 		</style>
 		<!-- Custom styles for this template -->
-		<link href="{{ 'assets/css/carousel.css' }}" rel="stylesheet">
+		<link href="{{ '/assets/css/carousel.css' }}" rel="stylesheet">
 	</head>
 	<body>
 		<header>
@@ -68,7 +68,9 @@
 							<a href="{{ path('register') }}">Inscription</a>
 						{% endif %}
 					</div>
-
+						<a href="{{ path('cart')}}">
+							<img src="{{'/assets/img/shopping-cart.png'}}" class="cart-icon" alt="Mon panier">
+						</a>	
 				</div>
 			</nav>
 		</header>
@@ -155,6 +157,6 @@
 				</footer>
 			</main>
 			<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-			<script src="{{ 'assets/js/bootstrap.bundle.js' }}"></script>
+			<script src="{{ '/assets/js/bootstrap.bundle.js' }}"></script>
 		</body>
 	</html>
