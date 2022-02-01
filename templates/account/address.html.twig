@@ -20,10 +20,11 @@ C'est un espace que vous aller pouvoir gérer toutes vos adresses. <br>
             <div class="card-body">
                 <h5 class="card-title">{{ address.name }}</h5>
                 <p class="card-text">
+                {{ address.firstname }} {{ address.lastname }}, <br>
                 {{ address.address }},<br>
                 {{ address.postal }} - {{ address.city }} - {{ address.country }}
                 </p>
-                <a href="{{ path('edit_account_address', {'id': address.id}) }}">Modifier</a> | <a href="">Supprimer</a>
+                <a href="{{ path('edit_account_address', {'id': address.id}) }}">Modifier</a> | <a href="{{ path('delete_account_address', {'id': address.id}) }}">Supprimer</a>
             </div>
         </div>
     </div>
