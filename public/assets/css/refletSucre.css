@@ -29,6 +29,14 @@ body {
     margin-bottom: 50px;
 }
 
+/* templates/product/show.html.twig */
+.product-page-price {
+    font-size: 19px;
+}
+.container-product-show {
+    margin: 60px 0 120px 0;
+} 
+
 /* templates/Product/index.html.twig */
 .product-item h5 {
     text-transform: uppercase;
@@ -56,16 +64,25 @@ body {
     margin-bottom: 130px;
 }
 
-/* templates/product/show.html.twig */
-.product-page-price {
-    font-size: 19px;
-}
-.container-product-show {
-    margin: 60px 0 120px 0;
-} 
-
 /* templates/security/login.html.twig */
 .block-small {
     max-width: 600px;
     margin: 0 auto;
+}
+
+/* templates/order/index.html.twig */
+.form-check {
+    background-color: #f4f8ff;
+    padding: 20px 65px;
+    margin-top: 7px;
+    border-radius: 0.25rem;
+}
+.col-form-label {
+    font-weight: bold;
+}
+.order-summary {
+    background-color: #f4f8ff;
+    padding: 20px;
+    margin-top: 22px;
+    
 }
