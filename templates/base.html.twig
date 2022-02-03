@@ -19,6 +19,10 @@
 		<link rel="stylesheet" href="{{ '/assets/css/bootstrap.min.css' }}">
 		<link rel="stylesheet" href="{{ '/assets/css/refletSucre.css' }}">
 
+		{% block javascript %}
+			<script src="https://js.stripe.com/v3/"></script>
+		{% endblock %}
+
 		<style>
 			.bd-placeholder-img {
 				font-size: 1.125rem;
