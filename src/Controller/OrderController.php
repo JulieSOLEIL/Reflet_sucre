@@ -2,16 +2,15 @@
 
 namespace App\Controller;
 
-use Stripe\Stripe;
+
 use App\Classe\Cart;
 use App\Entity\Order;
 use App\Form\OrderType;
 use App\Entity\OrderDetails;
-use Stripe\Checkout\Session;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Annotation\Route; 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class OrderController extends AbstractController
@@ -41,7 +40,7 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/commande/recapitulatif', name: 'order_recap', methods:'POST')]
+    #[Route('/commande/recapitulatif', name: 'order_recap', methods:['POST'])]
     public function add(Cart $cart, Request $request): Response
     {
 
@@ -68,6 +67,8 @@ class OrderController extends AbstractController
 
             // enregistrer ma commande Order()
             $order = new Order();
+            $reference = $date->format('dmY').'-'.uniqid();
+            $order->setReference($reference);
             $order->setUser($this->getUser());
             $order->setCreatedAt($date);
             $order->setCarrierName($carriers->getName());
@@ -76,9 +77,6 @@ class OrderController extends AbstractController
             $order->setIsPaid(0);
 
             $this->entityManager->persist($order);
-
-            $products_for_stripe = [];
-            $YOUR_DOMAIN = 'http://127.0.0.1:8000';
 
             // enregistrer mes produits OrderDetails()
             foreach ($cart->getFull() as $product) {
@@ -89,40 +87,16 @@ class OrderController extends AbstractController
                 $orderDetails->setQuantity($product['quantity']);
                 $orderDetails->setPrice($product['product']->getPrice());
                 $orderDetails->setTotal($product['product']->getPrice() * $product['quantity']);
-                $this->entityManager->persist($orderDetails);
-
-                $products_for_stripe[] = [
-                    'price_data' => [
-                        'unit_amount' => $product['product']->getPrice(),
-                        'currency' => 'eur',
-                        'product_data' => [
-                            'name' => $product['product']->getName(),
-                            'images' => [$YOUR_DOMAIN.'uploads/'.$product['product']->getIllustration()],
-                        ],
-                    ],  
-                    'quantity' => $product['quantity'],
-                ];
+                $this->entityManager->persist($orderDetails);                
             }
-            // $this->entityManager->flush();
 
-            Stripe::setApiKey('sk_test_51KP1kIAIeuFpHgfhHPCKsoBnNT29Vuf3f0uIa8RsZsuBfM8yarXk7k92srlXs4PsMCmRNCVdIpbTM5SlRcp0XTqk00RV9r2T8h');
-
-            $checkout_session = Session::create([
-                'payment_method_types' => ['card'],
-                'line_items' => [
-                # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
-                $products_for_stripe
-                ],
-                'mode' => 'payment',
-                'success_url' => $YOUR_DOMAIN . '/success.html',
-                'cancel_url' => $YOUR_DOMAIN . '/cancel.html',
-            ]);
+            $this->entityManager->flush();
 
             return $this->render('order/add.html.twig', [
                 'cart' => $cart->getFull(),
                 'carrier' => $carriers,
                 'delivery' => $delivery_content,
-                'stripe_checkout_session' => $checkout_session->id
+                'reference' => $order->getReference()
             ]);
         }
 

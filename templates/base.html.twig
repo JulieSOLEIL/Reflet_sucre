@@ -18,10 +18,9 @@
 		<!-- Bootstrap core CSS -->
 		<link rel="stylesheet" href="{{ '/assets/css/bootstrap.min.css' }}">
 		<link rel="stylesheet" href="{{ '/assets/css/refletSucre.css' }}">
-
 		{% block javascript %}
-			<script src="https://js.stripe.com/v3/"></script>
-		{% endblock %}
+    	{% endblock %}
+
 
 		<style>
 			.bd-placeholder-img {
@@ -162,5 +161,8 @@
 			</main>
 			<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 			<script src="{{ '/assets/js/bootstrap.bundle.js' }}"></script>
+
 		</body>
+		{% block script %}
+		{% endblock %}
 	</html>
