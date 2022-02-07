@@ -6,8 +6,10 @@ use Stripe\Stripe;
 use App\Classe\Cart;
 use App\Entity\Order;
 use App\Entity\Product;
-use Stripe\Checkout\Session;
 use Stripe\ApiOperations\Create;
+use Stripe\Checkout\Session;
+use App\Repository\OrderRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,19 +19,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class StripeController extends AbstractController
 {
     #[Route('/commande/create-session/{reference}', name: 'stripe_create_session')]
-    public function index(Cart $cart, $reference, EntityManagerInterface $entityManager): Response
+    public function index(Cart $cart, $reference, EntityManagerInterface $entityManager, OrderRepository $order_repo, ProductRepository $prod_repo): Response
     {
         $products_for_stripe = [];
-        $YOUR_DOMAIN = 'http://127.0.0.1:8000';
+        $YOUR_DOMAIN = 'http://localhost:8000';
 
-        $order = $entityManager->getRepository(Order::class)->findOneByReference($reference);
+        $order = $order_repo->findOneByReference($reference);
 
         if (!$order) {
             new JsonResponse(['error' => 'order']);
+            // return $this->redirectToRoute('order');
         }
 
         foreach ($order->getOrderDetails()->getValues() as $product) {
-            $product_object = $entityManager->getRepository(Product::class)->findOneByName($product->getProduct());
+            $product_object = $prod_repo->findOneByName($product->getProduct());
 
             $products_for_stripe[] = [
                 'price_data' => [
@@ -37,7 +40,7 @@ class StripeController extends AbstractController
                     'currency' => 'eur',
                     'product_data' => [
                         'name' => $product->getProduct(),
-                        'images' => [$YOUR_DOMAIN.'uploads/'.$product_object->getIllustration()],
+                        'images' => [$YOUR_DOMAIN.'/uploads/'.$product_object->getIllustration()],
                     ],
                 ],  
                 'quantity' => $product->getQuantity(),
@@ -47,7 +50,7 @@ class StripeController extends AbstractController
         // Prix livraison : 
         $products_for_stripe[] = [
             'price_data' => [
-                'unit_amount' => $order->getCarrierPrice() * 100,
+                'unit_amount' => $order->getCarrierPrice(),
                 'currency' => 'eur',
                 'product_data' => [
                     'name' => $order->getCarrierName(),
@@ -57,26 +60,27 @@ class StripeController extends AbstractController
             'quantity' => 1,
         ];
 
-        \Stripe\Stripe::setApiKey("sk_test_51KP1kIAIeuFpHgfhHPCKsoBnNT29Vuf3f0uIa8RsZsuBfM8yarXk7k92srlXs4PsMCmRNCVdIpbTM5SlRcp0XTqk00RV9r2T8h");
+        $stripe = Stripe::setApiKey("sk_test_51KP1kIAIeuFpHgfhHPCKsoBnNT29Vuf3f0uIa8RsZsuBfM8yarXk7k92srlXs4PsMCmRNCVdIpbTM5SlRcp0XTqk00RV9r2T8h");
 
-        $checkout_session = Session::create([
+        // dd($stripe);
+
+        $checkout_session = Session::Create([
             'customer_email' => $this->getUser()->getEmail(),
             'payment_method_types' => [
                 'card'
-            ],
+            ], 
             'line_items' => [
                 $products_for_stripe
             ],
             'mode' => 'payment',
-            'success_url' => $YOUR_DOMAIN . '/success.html',
-            'cancel_url' => $YOUR_DOMAIN . '/cancel.html',
+            'success_url' => $YOUR_DOMAIN . '/commande/merci/{CHECKOUT_SESSION_ID}',
+            'cancel_url' => $YOUR_DOMAIN . '/commande/erreur/{CHECKOUT_SESSION_ID}',
         ]);
 
-        // dump($checkout_session->id);
-        // dd($checkout_session);
+        
+        $order->setStripeSessionId($checkout_session->id);
+        $entityManager->flush();
 
-        // header("HTTP/1.1 303 See Other");
-        // header("Location: " . $checkout_session->url);
         return $this->redirect($checkout_session->url);
         // $response = new JsonResponse(['id' => $checkout_session->id]);
         // return $response;

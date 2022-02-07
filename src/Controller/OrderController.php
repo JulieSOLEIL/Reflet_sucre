@@ -40,7 +40,7 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/commande/recapitulatif', name: 'order_recap', methods:['POST'])]
+    #[Route('/commande/recapitulatif', name: 'order_recap', methods:'POST')]
     public function add(Cart $cart, Request $request): Response
     {
 
@@ -68,6 +68,7 @@ class OrderController extends AbstractController
             // enregistrer ma commande Order()
             $order = new Order();
             $reference = $date->format('dmY').'-'.uniqid();
+
             $order->setReference($reference);
             $order->setUser($this->getUser());
             $order->setCreatedAt($date);
