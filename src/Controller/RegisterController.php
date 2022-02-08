@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Classe\Mail;
 use App\Entity\User;
 use App\Form\RegisterType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,8 +23,10 @@ class RegisterController extends AbstractController
     }
     
     #[Route('/inscription', name: 'register')]
-    public function index(Request $request, UserPasswordHasherInterface $hasher): Response
+    public function index(Request $request, UserPasswordHasherInterface $hasher, UserRepository $user_repo): Response
     {
+        $notification = null;
+
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user);
 
@@ -32,17 +36,32 @@ class RegisterController extends AbstractController
 
             $user = $form->getData(); 
 
-            $psw = $hasher->hashPassword($user, $user->getPassword());
+            $search_email = $user_repo->findOneByEmail($user->getEmail());
 
-            $user->setPassword($psw);
+            if (!$search_email) {
+                $psw = $hasher->hashPassword($user, $user->getPassword());
 
-            $this->entityManager->persist($user); //persist signifie vouloir figer les datas de $user
-            $this->entityManager->flush();
+                $user->setPassword($psw);
+
+                $this->entityManager->persist($user); //persist signifie vouloir figer les datas de $user
+                $this->entityManager->flush();
+
+                $mail = new Mail();
+                $content = 'Bonjour '.$user->getFirstname().'.'.'<br>'.'Bienvenue sur le site Reflet Sucré, un site dédiée aux pâtisseries de Julie.'.'<br>'.'Vous pouvez dès à présent découvrir nos pâtisseries et gâteaux sur notre plateforme. Commandez-les sans attendre ! ';
+                $mail->Send($user->getEmail(), $user->getFirstname(), 'Bienvenue sur le site Reflet Sucré', $content);
+
+                $notification = 'Votre inscription s\'est correctement déroulée. Vous pouvez dès à présent vous connecter à votre compte.';
+            } else {
+                $notification = 'L\'email que vous avez renseigné existe déjà. Merci de renseigner un email non existant.';
+            }
+            
+            
         }
 
 
         return $this->render('register/index.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'notification' => $notification
         ]);
     }
 }

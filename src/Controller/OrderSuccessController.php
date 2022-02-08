@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Classe\Cart;
+use App\Classe\Mail;
 use App\Entity\Order;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,6 +40,9 @@ class OrderSuccessController extends AbstractController
             $this->entityManager->flush();
 
             //Envoyer email au client pour confirmation commande
+            $mail = new Mail();
+            $content = 'Bonjour '.$order->getUser()->getFirstname().'.'.'<br>'.'Merci pour votre commande.'.'<br>'.'Vous trouverez le suivi de votre commande dans votre compte client. N\'hésitez pas à poser vos questions sur'.'<a href="{{ path("order_success")}}">'.' contact@reflet-sucré.fr'.'</a>'.', nous vous y répondrons rapidement.';
+            $mail->Send($order->getUser()->getEmail(), $order->getUser()->getFirstname(), 'Votre commande sur Reflet Sucré a été validé !', $content);
         }
         // afficher infos de la commande du client
         return $this->render('order_success/index.html.twig', [

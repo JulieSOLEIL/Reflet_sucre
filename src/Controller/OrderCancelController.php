@@ -29,7 +29,7 @@ class OrderCancelController extends AbstractController
         }
         //envoyer email au client pour indiquer echec de paiement
         return $this->render('order_cancel/index.html.twig', [
-            
+            'order' => $order
         ]);
     }
 }

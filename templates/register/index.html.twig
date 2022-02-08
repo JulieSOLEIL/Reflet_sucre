@@ -4,6 +4,11 @@
 
  <h1>Formulaire d'inscription</h1>
 
+ {% if notification %}
+    <div class="alert-info">{{ notification }}</div>
+    <hr>
+ {% endif %}
+
 {{ form(form)}}
 <div class="button-submit-password"></div>
 <hr>

@@ -12,6 +12,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.11",
         "easycorp/easyadmin-bundle": "^4.0",
+        "mailjet/mailjet-apiv3-php": "^1.5",
         "stripe/stripe-php": "^7.113",
         "symfony/asset": "6.0.*",
         "symfony/config": "6.0.*",
