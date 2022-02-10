@@ -30,4 +30,16 @@ class HomeController extends AbstractController
             'headers' => $headers
         ]);
     }
+    #[Route('/qui-sommes-nous', name: 'home_about')]
+    public function about(): Response
+    {     
+        return $this->render('home/about.html.twig', [
+        ]);
+    }
+    #[Route('/contact', name: 'home_contact')]
+    public function contact(): Response
+    {       
+        return $this->render('home/contact.html.twig', [
+        ]);
+    }
 }
