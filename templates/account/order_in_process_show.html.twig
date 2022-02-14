@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ma commande - Reflet Sucré
+{% block title %}Ma commande en cours - Reflet Sucré
 {% endblock %}
 
 {% block content %}
-	<h1>Ma commande{{ order.reference }}</h1>
+	<h1>Ma commande en cours {{ order.reference }}</h1>
 	<a href="{{ path('account')}}">Retour</a>
 	<hr><strong></strong>
 	<div class="row">

@@ -26,7 +26,22 @@ class OrderRepository extends ServiceEntityRepository
     public function findSuccessOrders($user)
     {
         return $this->createQueryBuilder('o')
-            ->andWhere('o.state > 0')
+            ->andWhere('o.state BETWEEN 0 AND 3 OR o.state BETWEEN 5 AND 7')
+            ->andWhere('o.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('o.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /*
+     * findOrdersDone()
+     * permet affichage des commandes passées dans espace membre du client
+     */
+    public function findOrdersDone($user)
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.state = 4 OR o.state = 8')
             ->andWhere('o.user = :user')
             ->setParameter('user', $user)
             ->orderBy('o.id', 'DESC')

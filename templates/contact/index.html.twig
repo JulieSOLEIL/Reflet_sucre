@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nous contacter - Reflet Sucré{% endblock %}
+
+{% block content %}
+
+<h2>Nous contacter</h2>
+<p>N'hésitez pas à nous écrire, notre équipe vous répondrons dans les meilleurs délais.</p>
+
+ {% for message in app.flashes('notice') %}
+    <div class="alert alert-info">{{ message }}</div>
+{% endfor %}
+
+<div class="row">
+    <div class="col-md-8">{{ form(form) }}</div>
+    <div class="col-md-4">
+    <strong>Reflet Sucré</strong>
+    <hr>
+    06 01 01 01 01, <br>
+    18 Boulevard du Chocolat, 75000 Paris, <br>
+    contact@reflet-sucré.fr <br>
+    </div>
+</div>
+{% endblock %}

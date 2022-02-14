@@ -22,7 +22,32 @@ body {
 }
 /* templates/account/index.html.twig */
 .footer-account-index {
-    margin-bottom: 200px;
+    margin-bottom: 50px;
+}
+.account-item {
+    background-color: #52b788;
+    padding: 70px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.account-item a {
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 500;
+}
+.account-item a:hover {
+    color: #1b4332;
+    text-decoration: none;
+}
+/* Responsive CSS pour les box */
+@media (max-width: 991.20px) {
+    .account-item {
+        background-color: #52b788;
+        padding: 30px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
 }
 /* templates/register/index.html.twig */
 .button-submit-password {
